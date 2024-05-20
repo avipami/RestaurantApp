@@ -19,6 +19,11 @@
 		C5880CDF2BF69F4600A1767D /* FilterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5880CDE2BF69F4600A1767D /* FilterModel.swift */; };
 		C5880CE12BF69F5600A1767D /* OpenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5880CE02BF69F5600A1767D /* OpenModel.swift */; };
 		C5880CE42BF69F8E00A1767D /* RestaurantViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5880CE32BF69F8E00A1767D /* RestaurantViewModel.swift */; };
+		C5880D032BFBA4E300A1767D /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5880D022BFBA4E300A1767D /* FilterView.swift */; };
+		C5880D052BFBA50600A1767D /* FilterItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5880D042BFBA50600A1767D /* FilterItemView.swift */; };
+		C5880D072BFBA56D00A1767D /* GraphicsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5880D062BFBA56D00A1767D /* GraphicsModel.swift */; };
+		C5880D092BFBB1B000A1767D /* FilterTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5880D082BFBB1B000A1767D /* FilterTypes.swift */; };
+		C5880D0B2BFBB5F800A1767D /* ButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5880D0A2BFBB5F800A1767D /* ButtonViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +40,11 @@
 		C5880CDE2BF69F4600A1767D /* FilterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterModel.swift; sourceTree = "<group>"; };
 		C5880CE02BF69F5600A1767D /* OpenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenModel.swift; sourceTree = "<group>"; };
 		C5880CE32BF69F8E00A1767D /* RestaurantViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantViewModel.swift; sourceTree = "<group>"; };
+		C5880D022BFBA4E300A1767D /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
+		C5880D042BFBA50600A1767D /* FilterItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterItemView.swift; sourceTree = "<group>"; };
+		C5880D062BFBA56D00A1767D /* GraphicsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsModel.swift; sourceTree = "<group>"; };
+		C5880D082BFBB1B000A1767D /* FilterTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTypes.swift; sourceTree = "<group>"; };
+		C5880D0A2BFBB5F800A1767D /* ButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +77,7 @@
 		C5880CC02BF5119200A1767D /* UmainApp */ = {
 			isa = PBXGroup;
 			children = (
+				C5880CFF2BFB6ACA00A1767D /* Components */,
 				C5880CE22BF69F7F00A1767D /* ViewModels */,
 				C5880CDB2BF69F2400A1767D /* Models */,
 				C5880CD82BF5121300A1767D /* Managers */,
@@ -91,7 +102,10 @@
 			isa = PBXGroup;
 			children = (
 				C5880CD42BF511F000A1767D /* Home.swift */,
+				C5880D022BFBA4E300A1767D /* FilterView.swift */,
+				C5880D042BFBA50600A1767D /* FilterItemView.swift */,
 				C5880CD62BF5120800A1767D /* RestaurantCardView.swift */,
+				C5880D082BFBB1B000A1767D /* FilterTypes.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -111,6 +125,7 @@
 				C5880CDC2BF69F3300A1767D /* RestaurantModel.swift */,
 				C5880CDE2BF69F4600A1767D /* FilterModel.swift */,
 				C5880CE02BF69F5600A1767D /* OpenModel.swift */,
+				C5880D062BFBA56D00A1767D /* GraphicsModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -119,8 +134,16 @@
 			isa = PBXGroup;
 			children = (
 				C5880CE32BF69F8E00A1767D /* RestaurantViewModel.swift */,
+				C5880D0A2BFBB5F800A1767D /* ButtonViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		C5880CFF2BFB6ACA00A1767D /* Components */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -197,9 +220,14 @@
 				C5880CD02BF511B200A1767D /* NetworkManager.swift in Sources */,
 				C5880CDD2BF69F3300A1767D /* RestaurantModel.swift in Sources */,
 				C5880CDF2BF69F4600A1767D /* FilterModel.swift in Sources */,
+				C5880D032BFBA4E300A1767D /* FilterView.swift in Sources */,
 				C5880CD52BF511F000A1767D /* Home.swift in Sources */,
+				C5880D0B2BFBB5F800A1767D /* ButtonViewModel.swift in Sources */,
 				C5880CC22BF5119200A1767D /* UmainAppApp.swift in Sources */,
 				C5880CD22BF511CF00A1767D /* Model.swift in Sources */,
+				C5880D092BFBB1B000A1767D /* FilterTypes.swift in Sources */,
+				C5880D052BFBA50600A1767D /* FilterItemView.swift in Sources */,
+				C5880D072BFBA56D00A1767D /* GraphicsModel.swift in Sources */,
 				C5880CE12BF69F5600A1767D /* OpenModel.swift in Sources */,
 				C5880CDA2BF5122400A1767D /* ViewManager.swift in Sources */,
 				C5880CD72BF5120800A1767D /* RestaurantCardView.swift in Sources */,

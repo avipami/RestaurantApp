@@ -39,28 +39,58 @@ class NetworkManager {
         }.resume()
     }
     
-//    func fetchFilters(completion: @escaping (Result<[Filter], Error>) -> Void) {
-//        let url = URL(string: "https://food-delivery.umain.io/api/v1/filter")!
-//
-//        URLSession.shared.dataTask(with: url) { data, response, error in
-//            if let error = error {
-//                completion(.failure(error))
-//                return
-//            }
-//
-//            guard let data = data else {
-//                completion(.failure(NSError(domain: "dataNilError", code: -100001, userInfo: nil)))
-//                return
-//            }
-//
-//            do {
-//                let response = try JSONDecoder().decode([Filter].self, from: data)
-//                completion(.success(response))
-//            } catch {
-//                completion(.failure(error))
-//            }
-//        }.resume()
-//    }
+    enum NetworkError: Error {
+        case invalidURL
+        case invalidResponse
+        case noData
+        case error
+        case decodeError
+    }
+    
+    func fetchFilters(filterID: String, completion: @escaping (Result<Filter, Error>) -> Void) {
+        let urlString = "https://food-delivery.umain.io/api/v1/filter/\(filterID)"
+        guard let url = URL(string: urlString) else {
+            print("Invalid URL")
+            completion(.failure(NetworkError.invalidURL))
+            return
+        }
+        
+        let session = URLSession.shared
+        let task = session.dataTask(with: url) { (data, response, error) in
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+                completion(.failure(NetworkError.error))
+                return
+            }
+            
+            guard let responseData = data else {
+                print("No data received")
+                completion(.failure(NetworkError.noData))
+                return
+            }
+            
+            do {
+                let decoder = JSONDecoder()
+                let filter = try decoder.decode(Filter.self, from: responseData)
+                completion(.success(filter))
+            } catch {
+                print("Error decoding JSON: \(error.localizedDescription)")
+                completion(.failure(NetworkError.decodeError))
+            }
+        }
+        
+        task.resume()
+    }
+
+    
+        
+        
+        
+        
+        
+        
+        
+
     
 //    func fetchRestaurantOpenStatus(restaurantId: String, completion: @escaping (Result<OpenStatus, Error>) -> Void) {
 //        let url = URL(string: "https://food-delivery.umain.io/api/v1/open/\(restaurantId)")!

@@ -11,80 +11,63 @@ struct Home: View {
     @StateObject var viewModel = RestaurantViewModel()
     
     var body: some View {
+        
         NavigationView {
-            VStack {
-                FilterView(viewModel: viewModel)
-                List(viewModel.restaurants) { restaurant in
-//                    NavigationLink(destination: RestaurantDetailView(restaurant: restaurant)) {
-//                        RestaurantRowView(restaurant: restaurant)
-//                    }
-                }
-                .navigationTitle("Restaurants")
-            }
-        }
-    }
-}
-
-#Preview {
-    Home()
-}
-struct FilterView: View {
-    @ObservedObject var viewModel: RestaurantViewModel
+            
+            VStack(alignment: .leading, spacing: 22) {
+                Image("Umain")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: 54)
+                    .padding(.leading, 16)
+                    
+                FilterView()
+                
+            ScrollView {
     
-    var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack {
-                ForEach(viewModel.filters) { filter in
-                    FilterItemView(filter: filter, isSelected: viewModel.selectedFilters.contains(filter.id))
-                        .onTapGesture {
-                            viewModel.toggleFilter(filter)
+                    ForEach(viewModel.restaurants, id: \.id) { restaurant in
+                        NavigationLink(destination: RestaurantCardView(restaurant: restaurant)) {
+                            RestaurantCardView(restaurant: restaurant)
+                                .shadow(color: /*@START_MENU_TOKEN@*/.black/*@END_MENU_TOKEN@*/.opacity(0.1), radius: 4, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 4)
+                                
                         }
+                        .padding(.top, 30)
+                    }.padding(.top, 10)
                 }
             }
         }
+        .environmentObject(viewModel)
     }
 }
 
-struct FilterItemView: View {
-    let filter: Filter
-    let isSelected: Bool
-    
-    var body: some View {
-        VStack {
-            AsyncImage(url: URL(string: filter.image_url)) { image in
-                image.resizable()
-                    .frame(width: 50, height: 50)
-            } placeholder: {
-                ProgressView()
-            }
-            Text(filter.name)
-        }
-        .padding()
-        .background(isSelected ? Color.blue : Color.gray)
-        .cornerRadius(8)
+struct Home_Previews: PreviewProvider {
+    static var previews: some View {
+        let graphicsModel = GraphicsModel()
+        Home()
+            .environmentObject(graphicsModel)
     }
 }
 
-struct RestaurantRowView: View {
-    let restaurant: Restaurant
-    
-    var body: some View {
-        HStack {
-            AsyncImage(url: URL(string: restaurant.imageURL)) { image in
-                image.resizable()
-                    .frame(width: 50, height: 50)
-            } placeholder: {
-                ProgressView()
-            }
-            VStack(alignment: .leading) {
-                Text(restaurant.name)
-                    .font(.headline)
-                Text("Rating: \(restaurant.rating)")
-                Text("Delivery Time: \(restaurant.deliveryTimeMinutes) min")
-            }
-        }
-    }
-}
+//struct RestaurantRowView: View {
+//    let restaurant: Restaurant
+//    
+//    var body: some View {
+//        HStack {
+//            AsyncImage(url: URL(string: restaurant.imageURL)) { image in
+//                image.resizable()
+//                    .frame(width: 50, height: 50)
+//            } placeholder: {
+//                ProgressView()
+//            }
+//            VStack(alignment: .leading) {
+//                Text(restaurant.name)
+//                    .font(.headline)
+//                Text("Rating: \(restaurant.rating)")
+//                Text("Delivery Time: \(restaurant.deliveryTimeMinutes) min")
+//            }
+//        }
+//    }
+//}
 
 //struct RestaurantDetailView: View {
 //    let restaurant: Restaurant
