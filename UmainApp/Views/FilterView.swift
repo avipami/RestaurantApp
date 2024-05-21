@@ -15,10 +15,12 @@ struct FilterView: View {
             HStack {
                 ForEach(viewModel.filters) { filter in
                     
-                    FilterItemView(filter: filter, isSelected: viewModel.selectedFilters.contains(filter.id))
-                        .onTapGesture {
+                    FilterItemView(filter: filter, isSelected: Binding<Bool>(
+                        get: { viewModel.selectedFilter == filter.id },
+                        set: { isSelected in
                             viewModel.toggleFilter(filter)
                         }
+                    ))
                 }
             }
         }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FilterItemView: View {
     let filter: Filter
-    var isSelected: Bool
+    @Binding var isSelected: Bool
     
     @ObservedObject var viewModel = ButtonViewModel()
     @EnvironmentObject var graphics : GraphicsModel
@@ -19,12 +19,9 @@ struct FilterItemView: View {
         HStack {
             ZStack(alignment: .leading) {
                 RoundedRectangle(cornerRadius: viewModel.buttonHeight/2)
-                    .foregroundStyle(viewModel.isSelected ? graphics.useColor(for: .selectedButton) : graphics.useColor(for: .background))
+                    .foregroundStyle(isSelected ? .orange : .white)
                     .frame(width: viewModel.buttonWidth, height: viewModel.buttonHeight)
                 
-                    .onTapGesture {
-                        viewModel.isSelected.toggle()
-                    }
                 AsyncImage(url: URL(string: filter.image_url)) { image in
                     image
                         .resizable()
@@ -50,13 +47,21 @@ struct FilterItemView: View {
             .padding(.leading, 21)
             
         }
+        .onTapGesture {
+            isSelected.toggle()
+        }
     }
 }
 
-struct FilterItemView_Previews: PreviewProvider {
-    static var previews: some View {
-        let graphicsModel = GraphicsModel()
-        Home()
-            .environmentObject(graphicsModel)
-    }
+#Preview {
+    let graphics = GraphicsModel()
+    let viewModel = ButtonViewModel()
+    @State var buttonState = false
+    
+    return FilterItemView(
+        filter: Filter(id: "c67cd8a3-f191-4083-ad28-741659f214d7", name: "Take-Out", image_url: "https://food-delivery.umain.io/images/filter/filter_take_out.png"),
+        isSelected: $buttonState,
+        viewModel: viewModel
+        
+    ).environmentObject(graphics)
 }

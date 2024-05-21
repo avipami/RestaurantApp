@@ -7,13 +7,37 @@
 
 import Foundation
 
+struct API {
+    static let baseURL = "https://food-delivery.umain.io/api/v1"
+    
+    static func restaurantsURL() -> URL? {
+        return URL(string: "\(baseURL)/restaurants")
+    }
+    
+    static func filtersURL() -> URL? {
+        return URL(string: "\(baseURL)/filters")
+    }
+    
+    static func openStatusURL(for restaurantId: String) -> URL? {
+        return URL(string: "\(baseURL)/open/\(restaurantId)")
+    }
+}
+
+enum NetworkError: Error {
+    case invalidURL
+    case invalidResponse
+    case noData
+    case error
+    case decodeError
+}
+
 class NetworkManager {
     static let shared = NetworkManager()
     
     private init() {}
     
     func fetchRestaurants(completion: @escaping (Result<[Restaurant], Error>) -> Void) {
-        let url = URL(string: "https://food-delivery.umain.io/api/v1/restaurants")!
+        guard let url = API.restaurantsURL()  else { return }
         
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
@@ -39,15 +63,9 @@ class NetworkManager {
         }.resume()
     }
     
-    enum NetworkError: Error {
-        case invalidURL
-        case invalidResponse
-        case noData
-        case error
-        case decodeError
-    }
     
     func fetchFilters(filterID: String, completion: @escaping (Result<Filter, Error>) -> Void) {
+        
         let urlString = "https://food-delivery.umain.io/api/v1/filter/\(filterID)"
         guard let url = URL(string: urlString) else {
             print("Invalid URL")
@@ -55,8 +73,8 @@ class NetworkManager {
             return
         }
         
-        let session = URLSession.shared
-        let task = session.dataTask(with: url) { (data, response, error) in
+        
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
                 completion(.failure(NetworkError.error))
@@ -77,9 +95,7 @@ class NetworkManager {
                 print("Error decoding JSON: \(error.localizedDescription)")
                 completion(.failure(NetworkError.decodeError))
             }
-        }
-        
-        task.resume()
+        }.resume()
     }
 
     
@@ -117,18 +133,3 @@ class NetworkManager {
 }
 
 
-struct API {
-    static let baseURL = "https://food-delivery.umain.io/api/v1"
-    
-    static func restaurantsURL() -> URL? {
-        return URL(string: "\(baseURL)/restaurants")
-    }
-    
-    static func filtersURL() -> URL? {
-        return URL(string: "\(baseURL)/filters")
-    }
-    
-    static func openStatusURL(for restaurantId: String) -> URL? {
-        return URL(string: "\(baseURL)/open/\(restaurantId)")
-    }
-}
