@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct RestaurantDetailView: View {
-    @EnvironmentObject var graphics : GraphicsModel
+    @EnvironmentObject var graphics: GraphicsModel
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var restaurantVM : RestaurantViewModel
-    @Binding var showDetailView : Bool
+    @EnvironmentObject var restaurantVM: RestaurantViewModel
+    @Binding var showDetailView: Bool
     
     let restaurant: Restaurant
     

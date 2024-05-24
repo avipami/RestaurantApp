@@ -31,6 +31,11 @@ struct RestaurantListView: View {
             }
             .padding(.top, 16)
         }
+        .onAppear {
+            print("Fetching restaurants")
+            restaurantVM.fetchRestaurants()
+        }
+        
         .fullScreenCover(
             isPresented: $showDetailView,
             onDismiss: {

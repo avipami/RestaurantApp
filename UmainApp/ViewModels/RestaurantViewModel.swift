@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Combine
 
 class RestaurantViewModel: ObservableObject {
     @Published var restaurants: [Restaurant] = [] {
@@ -23,7 +22,7 @@ class RestaurantViewModel: ObservableObject {
     
     
     init() {
-        fetchRestaurants()
+        //fetchRestaurants()
     }
     
     func fetchRestaurants() {
