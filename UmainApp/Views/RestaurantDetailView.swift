@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct RestaurantDetailView: View {
-    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var graphics : GraphicsModel
+    @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var restaurantVM : RestaurantViewModel
     @Binding var showDetailView : Bool
+    
     let restaurant: Restaurant
     
     var body: some View {
@@ -38,10 +40,10 @@ struct RestaurantDetailView: View {
                     .ignoresSafeArea()
                     .onTapGesture {
                         
-                            withAnimation {
-                                dismiss()
-                            }
-            
+                        withAnimation {
+                            dismiss()
+                        }
+                        
                     }
                 
                 ZStack {
@@ -59,15 +61,17 @@ struct RestaurantDetailView: View {
                         Text(restaurant.name)
                             .font(.system(size: 24))
                             .foregroundStyle(graphics.useColor(for: .darkText))
-                            
-                        Text("Take-Out • Fast Delivery • Eat-In")
+                        
+                        Text(restaurantVM.getFilterDescription(for: restaurant))
                             .font(.custom("helvetica", size: 16).bold())
                             .foregroundStyle(graphics.useColor(for: .subtitle))
-                            
+                            .multilineTextAlignment(.leading)
+                            .padding(.trailing, 32)
+                        
                         HStack(spacing: 0) {
-                            Text("Open")
+                            Text(restaurantVM.isRestaurantOpen ? "Open" : "Closed")
                                 .font(.system(size: 16))
-                                .foregroundStyle(graphics.useColor(for: .positive))
+                                .foregroundStyle(graphics.useColor(for: restaurantVM.isRestaurantOpen ? .positive : .negative))
                             
                             Spacer()
                         }
@@ -79,6 +83,20 @@ struct RestaurantDetailView: View {
             Spacer()
         }
         .padding(.horizontal, 16)
+        .onAppear(perform: {
+            restaurantVM.fetchRestaurantIfOpen(restaurantId: restaurant.id)
+        })
+        
+        
+        .gesture(
+            DragGesture()
+                .onEnded { value in
+                    if value.translation.height > 100 {
+                        dismiss()
+                    }
+                }
+        )
+        
     }
 }
 
@@ -97,10 +115,10 @@ struct RestaurantDetailView_Previews: PreviewProvider {
             name: "Wayne \"Chad Broski\" Burgers",
             imageURL: "https://food-delivery.umain.io/images/restaurant/burgers.png")
         
-        let graphicsModel = GraphicsModel()
         @State var showDetailView = true
         
         RestaurantDetailView(showDetailView: $showDetailView, restaurant: restaurant)
-            .environmentObject(graphicsModel)
+            .environmentObject(GraphicsModel())
+            .environmentObject(RestaurantViewModel())
     }
 }

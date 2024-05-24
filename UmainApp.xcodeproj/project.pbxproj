@@ -20,8 +20,10 @@
 		C5880D032BFBA4E300A1767D /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5880D022BFBA4E300A1767D /* FilterView.swift */; };
 		C5880D052BFBA50600A1767D /* FilterItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5880D042BFBA50600A1767D /* FilterItemView.swift */; };
 		C5880D072BFBA56D00A1767D /* GraphicsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5880D062BFBA56D00A1767D /* GraphicsModel.swift */; };
-		C5880D0B2BFBB5F800A1767D /* ButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5880D0A2BFBB5F800A1767D /* ButtonViewModel.swift */; };
+		C5880D0B2BFBB5F800A1767D /* FilterButtonSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5880D0A2BFBB5F800A1767D /* FilterButtonSpec.swift */; };
 		C59ECA1E2BFD05640034F20C /* RestaurantDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59ECA1D2BFD05640034F20C /* RestaurantDetailView.swift */; };
+		C59ECA202C00B05D0034F20C /* RestaurantListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59ECA1F2C00B05D0034F20C /* RestaurantListView.swift */; };
+		C5F13D6C2C00BEE7002AD500 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C5F13D6B2C00BEE7002AD500 /* Poppins-Medium.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,8 +41,11 @@
 		C5880D022BFBA4E300A1767D /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
 		C5880D042BFBA50600A1767D /* FilterItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterItemView.swift; sourceTree = "<group>"; };
 		C5880D062BFBA56D00A1767D /* GraphicsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsModel.swift; sourceTree = "<group>"; };
-		C5880D0A2BFBB5F800A1767D /* ButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonViewModel.swift; sourceTree = "<group>"; };
+		C5880D0A2BFBB5F800A1767D /* FilterButtonSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterButtonSpec.swift; sourceTree = "<group>"; };
 		C59ECA1D2BFD05640034F20C /* RestaurantDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantDetailView.swift; sourceTree = "<group>"; };
+		C59ECA1F2C00B05D0034F20C /* RestaurantListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantListView.swift; sourceTree = "<group>"; };
+		C5F13D6B2C00BEE7002AD500 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Medium.ttf"; sourceTree = "<group>"; };
+		C5F13D6D2C00BF01002AD500 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,11 +78,12 @@
 		C5880CC02BF5119200A1767D /* UmainApp */ = {
 			isa = PBXGroup;
 			children = (
-				C5880CFF2BFB6ACA00A1767D /* Components */,
-				C5880CE22BF69F7F00A1767D /* ViewModels */,
+				C5F13D6D2C00BF01002AD500 /* Info.plist */,
+				C5F13D6A2C00BEC9002AD500 /* fonts */,
 				C5880CDB2BF69F2400A1767D /* Models */,
 				C5880CD82BF5121300A1767D /* Managers */,
 				C5880CD32BF511E400A1767D /* Views */,
+				C5880CE22BF69F7F00A1767D /* ViewModels */,
 				C5880CC12BF5119200A1767D /* UmainAppApp.swift */,
 				C5880CC52BF5119300A1767D /* Assets.xcassets */,
 				C5880CC72BF5119300A1767D /* Preview Content */,
@@ -101,6 +107,7 @@
 				C5880D042BFBA50600A1767D /* FilterItemView.swift */,
 				C5880CD62BF5120800A1767D /* RestaurantCardView.swift */,
 				C59ECA1D2BFD05640034F20C /* RestaurantDetailView.swift */,
+				C59ECA1F2C00B05D0034F20C /* RestaurantListView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -116,10 +123,10 @@
 		C5880CDB2BF69F2400A1767D /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				C5880CDC2BF69F3300A1767D /* RestaurantModel.swift */,
 				C5880CDE2BF69F4600A1767D /* FilterModel.swift */,
-				C5880CE02BF69F5600A1767D /* OpenModel.swift */,
 				C5880D062BFBA56D00A1767D /* GraphicsModel.swift */,
+				C5880CDC2BF69F3300A1767D /* RestaurantModel.swift */,
+				C5880CE02BF69F5600A1767D /* OpenModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -128,16 +135,17 @@
 			isa = PBXGroup;
 			children = (
 				C5880CE32BF69F8E00A1767D /* RestaurantViewModel.swift */,
-				C5880D0A2BFBB5F800A1767D /* ButtonViewModel.swift */,
+				C5880D0A2BFBB5F800A1767D /* FilterButtonSpec.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		C5880CFF2BFB6ACA00A1767D /* Components */ = {
+		C5F13D6A2C00BEC9002AD500 /* fonts */ = {
 			isa = PBXGroup;
 			children = (
+				C5F13D6B2C00BEE7002AD500 /* Poppins-Medium.ttf */,
 			);
-			path = Components;
+			path = fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -198,6 +206,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5F13D6C2C00BEE7002AD500 /* Poppins-Medium.ttf in Resources */,
 				C5880CC92BF5119300A1767D /* Preview Assets.xcassets in Resources */,
 				C5880CC62BF5119300A1767D /* Assets.xcassets in Resources */,
 			);
@@ -217,7 +226,8 @@
 				C5880CDF2BF69F4600A1767D /* FilterModel.swift in Sources */,
 				C5880D032BFBA4E300A1767D /* FilterView.swift in Sources */,
 				C5880CD52BF511F000A1767D /* Home.swift in Sources */,
-				C5880D0B2BFBB5F800A1767D /* ButtonViewModel.swift in Sources */,
+				C59ECA202C00B05D0034F20C /* RestaurantListView.swift in Sources */,
+				C5880D0B2BFBB5F800A1767D /* FilterButtonSpec.swift in Sources */,
 				C5880CC22BF5119200A1767D /* UmainAppApp.swift in Sources */,
 				C5880D052BFBA50600A1767D /* FilterItemView.swift in Sources */,
 				C5880D072BFBA56D00A1767D /* GraphicsModel.swift in Sources */,
@@ -359,6 +369,7 @@
 				DEVELOPMENT_TEAM = 94T2DPQKGW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = UmainApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -388,6 +399,7 @@
 				DEVELOPMENT_TEAM = 94T2DPQKGW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = UmainApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

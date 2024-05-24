@@ -6,8 +6,14 @@
 //
 
 import Foundation
+
 struct Filter: Identifiable, Codable {
     let id: String
     let name: String
-    let image_url: String
+    let imageUrl: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id, name
+        case imageUrl = "image_url"
+    }
 }

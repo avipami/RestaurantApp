@@ -7,15 +7,15 @@
 
 import Foundation
 
-struct API {
+enum API {
     static let baseURL = "https://food-delivery.umain.io/api/v1"
     
     static func restaurantsURL() -> URL? {
         return URL(string: "\(baseURL)/restaurants")
     }
     
-    static func filtersURL() -> URL? {
-        return URL(string: "\(baseURL)/filters")
+    static func filtersURL(filterId: String) -> URL? {
+        return URL(string: "\(baseURL)/filter/\(filterId)")
     }
     
     static func openStatusURL(for restaurantId: String) -> URL? {
@@ -36,8 +36,12 @@ class NetworkManager {
     
     private init() {}
     
-    func fetchRestaurants(completion: @escaping (Result<[Restaurant], Error>) -> Void) {
-        guard let url = API.restaurantsURL()  else { return }
+    // Fetch Restaurants
+    func fetchFromApi(completion: @escaping (Result<[Restaurant], Error>) -> Void) {
+        guard let url = API.restaurantsURL() else {
+            completion(.failure(NetworkError.invalidURL))
+            return
+        }
         
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
@@ -46,7 +50,7 @@ class NetworkManager {
             }
             
             guard let data = data else {
-                completion(.failure(NSError(domain: "dataNilError", code: -100001, userInfo: nil)))
+                completion(.failure(NetworkError.noData))
                 return
             }
             
@@ -55,34 +59,30 @@ class NetworkManager {
                 completion(.success(response.restaurants))
             } catch {
                 if let jsonString = String(data: data, encoding: .utf8) {
-                    print("Raw JSON Data : \(jsonString)")
+                    //print("Raw JSON Data: \(jsonString)")
                 }
                 completion(.failure(error))
-                
             }
         }.resume()
     }
     
-    
+    // Fetch Filters
     func fetchFilters(filterID: String, completion: @escaping (Result<Filter, Error>) -> Void) {
-        
-        let urlString = "https://food-delivery.umain.io/api/v1/filter/\(filterID)"
-        guard let url = URL(string: urlString) else {
-            print("Invalid URL")
+        guard let url = API.filtersURL(filterId: filterID) else {
+            //print("Invalid URL")
             completion(.failure(NetworkError.invalidURL))
             return
         }
         
-        
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
+        URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
-                print("Error: \(error.localizedDescription)")
+                //print("Error: \(error.localizedDescription)")
                 completion(.failure(NetworkError.error))
                 return
             }
             
             guard let responseData = data else {
-                print("No data received")
+                //print("No data received")
                 completion(.failure(NetworkError.noData))
                 return
             }
@@ -92,44 +92,31 @@ class NetworkManager {
                 let filter = try decoder.decode(Filter.self, from: responseData)
                 completion(.success(filter))
             } catch {
-                print("Error decoding JSON: \(error.localizedDescription)")
+                //print("Error decoding JSON: \(error.localizedDescription)")
                 completion(.failure(NetworkError.decodeError))
             }
         }.resume()
     }
-
     
+    // Fetch Restaurant Open Status
+    func fetchOpenStatusFromAPI(restaurantId: String, completion: @escaping (Result<OpenStatus, Error>) -> Void) {
+        guard let url = API.openStatusURL(for: restaurantId) else { return }
         
-        
-        
-        
-        
-        
-        
-
-    
-//    func fetchRestaurantOpenStatus(restaurantId: String, completion: @escaping (Result<OpenStatus, Error>) -> Void) {
-//        let url = URL(string: "https://food-delivery.umain.io/api/v1/open/\(restaurantId)")!
-//        
-//        URLSession.shared.dataTask(with: url) { data, response, error in
-//            if let error = error {
-//                completion(.failure(error))
-//                return
-//            }
-//            
-//            guard let data = data else {
-//                completion(.failure(NSError(domain: "dataNilError", code: -100001, userInfo: nil)))
-//                return
-//            }
-//            
-//            do {
-//                let response = try JSONDecoder().decode(OpenStatus.self, from: data)
-//                completion(.success(response))
-//            } catch {
-//                completion(.failure(error))
-//            }
-//        }.resume()
-//    }
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            guard let data = data else {
+                completion(.failure(NetworkError.noData))
+                return
+            }
+            do {
+                let response = try JSONDecoder().decode(OpenStatus.self, from: data)
+                completion(.success(response))
+            } catch {
+                completion(.failure(error))
+            }
+        }.resume()
+    }
 }
-
-

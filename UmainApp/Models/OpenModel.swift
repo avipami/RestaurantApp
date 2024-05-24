@@ -8,6 +8,11 @@
 import Foundation
 
 struct OpenStatus: Codable {
-    let restaurant_id: String
-    let is_currently_open: Bool
+    let restaurantId: String
+    let isOpen: Bool
+    
+    enum CodingKeys: String, CodingKey {
+        case restaurantId = "restaurant_id"
+        case isOpen = "is_currently_open"
+    }
 }

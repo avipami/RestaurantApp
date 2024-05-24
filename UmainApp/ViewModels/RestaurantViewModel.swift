@@ -14,10 +14,12 @@ class RestaurantViewModel: ObservableObject {
             fetchFilters()
         }
     }
+    @Published var selectedRestaurant: Restaurant?
     @Published var filteredRestaurants: [Restaurant] = []
     @Published var filters: [Filter] = []
-    @Published var selectedFilter: String? = nil 
+    @Published var selectedFilters: Set<String> = []
     @Published var buttonActive: Bool = false
+    @Published var isRestaurantOpen: Bool = false
     
     
     init() {
@@ -25,18 +27,15 @@ class RestaurantViewModel: ObservableObject {
     }
     
     func fetchRestaurants() {
-        print("Fetching restaurants...")
-        
-        NetworkManager.shared.fetchRestaurants { [weak self] result in
+        NetworkManager.shared.fetchFromApi { [weak self] result in
             switch result {
             case .success(let restaurants):
                 DispatchQueue.main.async {
-                    print("Restaurants fetched successfully:", restaurants)
+                    //print("Restaurants fetched successfully:", restaurants)
                     self?.restaurants = restaurants
                 }
-                
-            case .failure(let error):
-                print("Failed to fetch restaurants: \(error)")
+            case .failure(let error): break
+                //print("Failed to fetch restaurants: \(error)")
             }
         }
     }
@@ -49,12 +48,12 @@ class RestaurantViewModel: ObservableObject {
         
         filterIDs.forEach { filterID in
             fetchGroup.enter()
-            fetchFilter(filterID: filterID) { result in
+            NetworkManager.shared.fetchFilters(filterID: filterID) { result in
                 switch result {
                 case .success(let filter):
                     fetchedFilters.append(filter)
-                case .failure(let error):
-                    print("Error fetching filter: \(error)")
+                case .failure(let error): break
+                    //print("Error fetching filter: \(error)")
                 }
                 fetchGroup.leave()
             }
@@ -65,51 +64,48 @@ class RestaurantViewModel: ObservableObject {
         }
     }
     
-    func sortRestaurantByFilter()  {
-        guard let selectedFilter = selectedFilter else { return }
+    
+    func fetchRestaurantIfOpen(restaurantId: String)  {
         
-        filteredRestaurants = restaurants.filter { restaurant in
-            restaurant.filterIDS.contains(selectedFilter)
+        NetworkManager.shared.fetchOpenStatusFromAPI(restaurantId: restaurantId) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let openStatus):
+                    self.isRestaurantOpen = openStatus.isOpen
+                    
+                case .failure(let error):
+                    //print("Failed to fetch open status: \(error.localizedDescription)")
+                    self.isRestaurantOpen = false
+                }
+            }
         }
     }
     
-    func fetchFilter(filterID: String, completion: @escaping (Result<Filter, Error>) -> Void) {
-        let urlString = "https://food-delivery.umain.io/api/v1/filter/\(filterID)"
-        guard let url = URL(string: urlString) else {
-            completion(.failure(NetworkError.invalidURL))
-            return
+    func sortRestaurantByFilter() {
+        if selectedFilters.isEmpty {
+            filteredRestaurants = restaurants
+        } else {
+            filteredRestaurants = restaurants.filter { restaurant in
+                selectedFilters.isSubset(of: Set(restaurant.filterIDS))
+            }
         }
+    }
+    
+    func getFilterDescription(for restaurant: Restaurant) -> String {
+        let filterNames = restaurant.filterIDS.compactMap { filterID in
+            filters.first(where: { $0.id == filterID })?.name
+        }
+        return filterNames.joined(separator: " • ")
         
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            guard let responseData = data else {
-                completion(.failure(NetworkError.noData))
-                return
-            }
-            
-            do {
-                let decoder = JSONDecoder()
-                let filter = try decoder.decode(Filter.self, from: responseData)
-                completion(.success(filter))
-            } catch {
-                completion(.failure(error))
-            }
-        }.resume()
     }
     
     func toggleFilter(_ filter: Filter) {
-        if selectedFilter == filter.id {
-            buttonActive = false
-            selectedFilter = nil
+        if selectedFilters.contains(filter.id) {
+            selectedFilters.remove(filter.id)
         } else {
-            selectedFilter = filter.id
-            buttonActive = true
-            sortRestaurantByFilter()
-            print("Selected filter", selectedFilter)
+            selectedFilters.insert(filter.id)
         }
+        buttonActive = !selectedFilters.isEmpty
+        sortRestaurantByFilter()
     }
 }

@@ -10,12 +10,12 @@ import SwiftUI
 
 class GraphicsModel: ObservableObject {
     
-    enum AppColors : String {
+    enum AppColors: String {
         case darkText
         case lightText
         case subtitle
         case background
-        case selectedButton
+        case selected
         case positive
         case negative
     }
