@@ -20,11 +20,6 @@ class RestaurantViewModel: ObservableObject {
     @Published var buttonActive: Bool = false
     @Published var isRestaurantOpen: Bool = false
     
-    
-    init() {
-        //fetchRestaurants()
-    }
-    
     func fetchRestaurants() {
         NetworkManager.shared.fetchFromApi { [weak self] result in
             switch result {
@@ -59,6 +54,7 @@ class RestaurantViewModel: ObservableObject {
         }
         
         fetchGroup.notify(queue: .main) {
+            fetchedFilters.sort { $0.name < $1.name } // To not make it randomly sorted
             self.filters = fetchedFilters
         }
     }

@@ -123,6 +123,7 @@
 		C5880CDB2BF69F2400A1767D /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C5880D0A2BFBB5F800A1767D /* FilterButtonSpec.swift */,
 				C5880CDE2BF69F4600A1767D /* FilterModel.swift */,
 				C5880D062BFBA56D00A1767D /* GraphicsModel.swift */,
 				C5880CDC2BF69F3300A1767D /* RestaurantModel.swift */,
@@ -135,7 +136,6 @@
 			isa = PBXGroup;
 			children = (
 				C5880CE32BF69F8E00A1767D /* RestaurantViewModel.swift */,
-				C5880D0A2BFBB5F800A1767D /* FilterButtonSpec.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
