@@ -27,7 +27,7 @@ enum NetworkError: Error {
     case invalidURL
     case invalidResponse
     case noData
-    case error
+    case error(Error)
     case decodeError
 }
 
@@ -37,15 +37,15 @@ class NetworkManager {
     private init() {}
     
     // Fetch Restaurants
-    func fetchFromApi(completion: @escaping (Result<[Restaurant], Error>) -> Void) {
+    func fetchFromApi(completion: @escaping (Result<[Restaurant], NetworkError>) -> Void) {
         guard let url = API.restaurantsURL() else {
-            completion(.failure(NetworkError.invalidURL))
+            completion(.failure(.invalidURL))
             return
         }
         
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
-                completion(.failure(error))
+                completion(.failure(.error(error)))
                 return
             }
             
@@ -61,29 +61,29 @@ class NetworkManager {
                 if let jsonString = String(data: data, encoding: .utf8) {
                     //print("Raw JSON Data: \(jsonString)")
                 }
-                completion(.failure(error))
+                completion(.failure(.error(error)))
             }
         }.resume()
     }
     
     // Fetch Filters
-    func fetchFilters(filterID: String, completion: @escaping (Result<Filter, Error>) -> Void) {
+    func fetchFilters(filterID: String, completion: @escaping (Result<Filter, NetworkError>) -> Void) {
         guard let url = API.filtersURL(filterId: filterID) else {
             //print("Invalid URL")
-            completion(.failure(NetworkError.invalidURL))
+            completion(.failure(.invalidURL))
             return
         }
         
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
                 //print("Error: \(error.localizedDescription)")
-                completion(.failure(NetworkError.error))
+                completion(.failure(.error(error)))
                 return
             }
             
             guard let responseData = data else {
                 //print("No data received")
-                completion(.failure(NetworkError.noData))
+                completion(.failure(.noData))
                 return
             }
             
@@ -93,29 +93,29 @@ class NetworkManager {
                 completion(.success(filter))
             } catch {
                 //print("Error decoding JSON: \(error.localizedDescription)")
-                completion(.failure(NetworkError.decodeError))
+                completion(.failure(.decodeError))
             }
         }.resume()
     }
     
     // Fetch Restaurant Open Status
-    func fetchOpenStatusFromAPI(restaurantId: String, completion: @escaping (Result<OpenStatus, Error>) -> Void) {
+    func fetchOpenStatusFromAPI(restaurantId: String, completion: @escaping (Result<OpenStatus, NetworkError>) -> Void) {
         guard let url = API.openStatusURL(for: restaurantId) else { return }
         
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
-                completion(.failure(error))
+                completion(.failure(.error(error)))
                 return
             }
             guard let data = data else {
-                completion(.failure(NetworkError.noData))
+                completion(.failure(.noData))
                 return
             }
             do {
                 let response = try JSONDecoder().decode(OpenStatus.self, from: data)
                 completion(.success(response))
             } catch {
-                completion(.failure(error))
+                completion(.failure(.error(error)))
             }
         }.resume()
     }
