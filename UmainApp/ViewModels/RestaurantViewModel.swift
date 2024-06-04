@@ -21,15 +21,16 @@ class RestaurantViewModel: ObservableObject {
     @Published var isRestaurantOpen: Bool = false
     
     func fetchRestaurants() {
-        NetworkManager.shared.fetchFromApi { [weak self] result in
-            switch result {
-            case .success(let restaurants):
-                DispatchQueue.main.async {
-                    //print("Restaurants fetched successfully:", restaurants)
+        Task {
+            do {
+                let restaurants = try await NetworkManager.shared.fetchFromApi()
+                DispatchQueue.main.async { [weak self] in
                     self?.restaurants = restaurants
                 }
-            case .failure(let error): break
-                //print("Failed to fetch restaurants: \(error)")
+                return
+            } catch {
+                // Handle the error, e.g., by logging or showing an alert
+                print("Failed to fetch restaurants: \(error)")
             }
         }
     }

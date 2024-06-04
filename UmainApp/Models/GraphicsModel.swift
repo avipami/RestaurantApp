@@ -15,6 +15,7 @@ class GraphicsModel: ObservableObject {
         case lightText
         case subtitle
         case background
+        case buttonBackground
         case selected
         case positive
         case negative

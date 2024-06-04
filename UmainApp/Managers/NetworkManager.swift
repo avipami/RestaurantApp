@@ -37,7 +37,7 @@ class NetworkManager {
     private init() {}
     
     // Fetch Restaurants
-    func fetchFromApi(completion: @escaping (Result<[Restaurant], NetworkError>) -> Void) {
+    private func fetchFromApi(completion: @escaping (Result<[Restaurant], NetworkError>) -> Void) {
         guard let url = API.restaurantsURL() else {
             completion(.failure(.invalidURL))
             return
@@ -64,6 +64,21 @@ class NetworkManager {
                 completion(.failure(.error(error)))
             }
         }.resume()
+    }
+    
+    func fetchFromApi() async throws -> [Restaurant] {
+        return try await withCheckedThrowingContinuation { continuation in
+            fetchFromApi { result in
+                switch result {
+                case .success(let restaurants):
+                    continuation.resume(returning: restaurants)
+                    break
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                    break
+                }
+            }
+        }
     }
     
     // Fetch Filters

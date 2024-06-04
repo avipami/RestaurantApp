@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Home: View {
-    
+    @EnvironmentObject var restaurantVM : RestaurantViewModel
     
     var body: some View {
         
@@ -18,6 +18,10 @@ struct Home: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(height: 54)
                 .padding(.leading, 16)
+                .onTapGesture {
+                    
+                    restaurantVM.fetchRestaurants()
+                }
             
             FilterView()
             RestaurantListView()

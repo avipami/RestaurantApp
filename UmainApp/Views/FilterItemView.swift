@@ -18,7 +18,7 @@ struct FilterItemView: View {
         HStack {
             ZStack(alignment: .leading) {
                 RoundedRectangle(cornerRadius: FilterButtonSpec.cornerRadius)
-                    .foregroundStyle(isSelected ? graphics.useColor(for: .selected) : graphics.useColor(for: .background))
+                    .foregroundStyle(isSelected ? graphics.useColor(for: .selected) : graphics.useColor(for: .buttonBackground))
                 
                 AsyncImage(url: URL(string: filter.imageUrl)) { image in
                     image
@@ -37,9 +37,9 @@ struct FilterItemView: View {
             }
             .frame(width: FilterButtonSpec.buttonWidth, height: FilterButtonSpec.buttonHeight)
             .background(Color.black
-                .opacity(0.06)
-                .shadow(color: .black, radius: 3, x: 0, y: 4)
-                .blur(radius: 8, opaque: false)
+                .opacity(0.02)
+                .shadow(color: .black, radius: 2, x: 0, y: 4)
+                .blur(radius: 5, opaque: false)
             )
             .frame(width: FilterButtonSpec.buttonWidth, height: FilterButtonSpec.buttonHeight + 20)
             
