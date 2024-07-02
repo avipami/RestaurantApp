@@ -26,6 +26,7 @@ struct RestaurantListView: View {
                     
                     RestaurantCardView(restaurant: restaurant)
                         .shadow(color: .black.opacity(0.05), radius: 4, x: 0.0, y: 4)
+                        .padding(.bottom, 20)
                 }
                 .padding(.bottom, 16)
             }
